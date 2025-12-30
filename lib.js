@@ -8,7 +8,7 @@ const rnd = function (m, n, precision= 2) {
     return res;
 }
 
-const generateRandomArray = function(n, end=50, start=5) {
+const generateRandomArray = function(n, end=n, start=5) {
     return Array.from({length: n}, (item, index) => {
         return rnd(end, start)
     })
