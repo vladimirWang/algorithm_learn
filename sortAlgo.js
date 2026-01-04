@@ -1,3 +1,4 @@
+// 基础冒泡排序
 function bubble(arr) {
     for(let i=0;i<arr.length-1;i++) {
         let changeOccur = false;
@@ -13,7 +14,7 @@ function bubble(arr) {
     }
 }
 
-
+// 优化后的冒泡排序
 function bubbleOptimized(arr) {
     let lastSwapPos = arr.length - 1; // 初始最后交换位置为数组末尾
     while (lastSwapPos > 0) {
@@ -29,6 +30,7 @@ function bubbleOptimized(arr) {
     }
 }
 
+// 选择排序
 function choose(arr) {
     const len = arr.length;
     for (let i =0; i<len-1;i++) {
@@ -117,11 +119,50 @@ function medianOfThree(arr, start, end) {
     return mid; // 中间值作为基准
 }
 
+// 归并排序执行合并
+function merge(arr, tempArr, left, mid, right) {
+    let l_pos = left;
+    let r_pos = mid+1;
+    let pos = left;
+    while(l_pos<=mid && r_pos<=right) {
+        if (arr[l_pos] <arr[r_pos]) {
+            tempArr[pos++] = arr[l_pos++];
+        } else {
+            tempArr[pos++] = arr[r_pos++];
+        }
+    }
+    while(l_pos<=mid) {
+        tempArr[pos++] = arr[l_pos++]
+    }
+    while(r_pos<=right) {
+        tempArr[pos++] = arr[r_pos++]
+    }
+    for (let i = left; i <= right; i++) {
+        arr[i] = tempArr[i];
+    }
+}
+// 归并排序递归部分
+function msort(arr, tempArr, left, right) {
+    if (left < right) {
+        let mid = Math.floor((left+right)/2)
+        msort(arr, tempArr, left, mid)
+        msort(arr, tempArr, mid+1, right)
+        merge(arr, tempArr, left, mid, right)
+    }
+}
+
+// 归并排序入口
+function mergeSort(arr) {
+    let tempArr = Array(arr.length)
+    msort(arr, tempArr, 0, arr.length-1)
+}
+
 
 module.exports = {
     bubble,
     bubbleOptimized,
     choose,
     baseQuick,
-    quickSort
+    quickSort,
+    mergeSort,
 }

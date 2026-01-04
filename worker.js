@@ -1,26 +1,29 @@
-const { bubble, bubbleOptimized, choose, baseQuick, quickSort } = require("./sortAlgo")
+const { bubble, bubbleOptimized, choose, baseQuick, quickSort, mergeSort } = require("./sortAlgo")
 
 // 从父进程接收消息
 process.on('message', (msg) => {
     const { algorithm, data } = msg;
     const startTime = Date.now();
     
-    let result;
+    let result = data.map(item => item)
     switch(algorithm) {
         case 'bubble':
-            bubble(data);
+            bubble(result);
             break;
         case 'bubbleOptimized':
-            bubbleOptimized(data);
+            bubbleOptimized(result);
             break;
         case 'choose':
-            choose(data);
+            choose(result);
             break;
         case 'baseQuick':
-            baseQuick(data);
+            baseQuick(result);
             break;
         case 'quickSort':
-            quickSort(data);
+            quickSort(result);
+            break;
+        case 'mergeSort':
+            mergeSort(result);
             break;
         default:
             process.send({ error: 'Unknown algorithm' });
@@ -33,7 +36,8 @@ process.on('message', (msg) => {
     process.send({ 
         algorithm,
         elapsed,
-        success: true
+        success: true,
+        result
     });
     
     // 退出进程
