@@ -1,42 +1,20 @@
-// 获取从根节点到指定节点的完整路径
-function getTreeNodeFullPath(node, root) {
-    let result = [];
-    function dfs(target, currentNode) {
-        if (!currentNode) return null;
-        result.push(currentNode);
-        if (target === currentNode) return currentNode;
-        let res = dfs(target, currentNode.left);
-        if (res) {
-            return res;
-        }
-        res = dfs(target, currentNode.right);
-        if (res) {
-            return res;
-        }
-        result.pop();
-        return null;
-    }
-    
-    dfs(node, root);
-    return result;
-}
+// 简化后的Node类：仅保留val、left、right核心属性
+class Node {
+  constructor(val) {
+    this.val = val; // 节点值
+    this.left = null; // 左子节点
+    this.right = null; // 右子节点
+  }
 
-// 最近公共祖先
-function lca(node1, node2, root) {
-    const path1 = getTreeNodeFullPath(node1, root);
-    const path2 = getTreeNodeFullPath(node2, root);
-    if (path1.length === 0 || path2.length === 0) return null;
+  // 简化setLeft：仅设置左子节点
+  setLeft(node) {
+    this.left = node;
+  }
 
-    let lcaNode = null;
-    const minLen = Math.min(path1.length, path2.length);
-    for (let i = 0;i<minLen;i++) {
-        if (path1[i] === path2[i]) {
-            lcaNode = path1[i];
-        } else {
-            break;
-        }
-    }
-    return lcaNode;
+  // 简化setRight：仅设置右子节点
+  setRight(node) {
+    this.right = node;
+  }
 }
 
 // 辅助函数1：判断节点是否在树中（带防环）
@@ -147,8 +125,43 @@ function lcaOptimized(node1, node2, root) {
   return nodeA === nodeB ? nodeA : null;
 }
 
-module.exports = {
-    getTreeNodeFullPath,
-    lca,
-    lcaOptimized
-};
+// ---------------- 测试验证 ----------------
+// 构建测试树：
+//        3 (root)
+//       / \
+//      5   1
+//     / \ / \
+//    6  2 0  8
+//      / \
+//     7   4
+const root = new Node(3);
+const node5 = new Node(5);
+const node1 = new Node(1);
+const node6 = new Node(6);
+const node2 = new Node(2);
+const node0 = new Node(0);
+const node8 = new Node(8);
+const node7 = new Node(7);
+const node4 = new Node(4);
+
+// 设置子节点
+root.setLeft(node5);
+root.setRight(node1);
+node5.setLeft(node6);
+node5.setRight(node2);
+node1.setLeft(node0);
+node1.setRight(node8);
+node2.setLeft(node7);
+node2.setRight(node4);
+
+// 测试场景1：root和node8的LCA → 预期root（val=3）
+console.log("root & node8的LCA：", lcaOptimized(root, node8, root)?.val); // 3 ✔️ 正确
+
+// 测试场景2：node4和node7的LCA → 预期node2（val=2）
+console.log("node4 & node7的LCA：", lcaOptimized(node4, node7, root)?.val); // 2 ✔️ 正确
+
+// 测试场景3：node5和node1的LCA → 预期root（val=3）
+console.log("node5 & node1的LCA：", lcaOptimized(node5, node1, root)?.val); // 3 ✔️ 正确
+
+// 测试场景4：node6和node4的LCA → 预期node5（val=5）
+console.log("node6 & node4的LCA：", lcaOptimized(node6, node4, root)?.val); // 5 ✔️ 正确
