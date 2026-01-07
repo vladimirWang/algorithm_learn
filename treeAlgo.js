@@ -22,7 +22,8 @@ function getTreeNodeFullPath(node, root) {
 }
 
 // 最近公共祖先
-function lca(node1, node2, root) {
+function lca(node1, node2, root, type) {
+    console.log("lca type: ", type);
     const path1 = getTreeNodeFullPath(node1, root);
     const path2 = getTreeNodeFullPath(node2, root);
     if (path1.length === 0 || path2.length === 0) return null;
