@@ -90,6 +90,32 @@ function getRandomTreeAndTwoNodes(targetDepth, valMin = 1, valMax = 100, hasChil
   return { root, node1, node2 };
 }
 
+/**
+ * 深拷贝二叉树
+ * 创建一个完全独立的树副本，新树和原树没有任何共享引用
+ * @param {Node} root - 要拷贝的二叉树根节点
+ * @returns {Node|null} 深拷贝后的新树根节点，如果输入为 null 则返回 null
+ */
+function deepCopyTree(root) {
+  // 如果根节点为空，直接返回 null
+  if (!root) return null;
+  
+  // 创建新节点，复制节点值
+  const newNode = new Node(root.val);
+  
+  // 递归拷贝左子树
+  if (root.left) {
+    newNode.setLeft(deepCopyTree(root.left));
+  }
+  
+  // 递归拷贝右子树
+  if (root.right) {
+    newNode.setRight(deepCopyTree(root.right));
+  }
+  
+  return newNode;
+}
+
 // // ---------------- 测试验证 ----------------
 // // 1. 生成随机二叉树（深度3）
 // const { root, node1, node2 } = getRandomTreeAndTwoNodes(3);
@@ -103,4 +129,5 @@ module.exports = {
   generateRandomBinaryTree,
   collectAllNodes,
   getRandomTreeAndTwoNodes,
+  deepCopyTree,
 };
