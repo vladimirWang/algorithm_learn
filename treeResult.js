@@ -10,11 +10,6 @@ const lcaOptimizedWorker = fork('./treeWorker');
 const depth = 30;
 const {root, node1, node2} = getRandomTreeAndTwoNodes(depth, 1, 200)
 
-const root2 = deepCopyTree(root)
-const node1_2 = findNodeByVal(root2, node1.val)
-const node2_2 = findNodeByVal(root2, node2.val)
-// const tree2 = generateRandomBinaryTree(5)
-
 if (depth < 10) {
     console.log("------------------root图形打印： --------------------")
     printTreeGraph(root)
